@@ -6,7 +6,7 @@
 mvn install
 
 # build images personajes
-build -t personajes .
+docker build -t personajes .
 
 # run images personajes
 docker run -it -p 8080:8080 personajes
