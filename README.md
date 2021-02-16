@@ -1,6 +1,10 @@
 # apisimplespringboot
 
-# Resume simple api
+Api simple con basic authenticacion
+
+Administrador: admin/admin
+Usuario: user/user
+
 
 # build proyect
 mvn install
@@ -17,5 +21,6 @@ localhost:8080/api/personajes
 # Get all personajes
 localhost:8080/api/personajes
 
-
+# Swagger
+http://localhost:8080/swagger-ui.html
 
