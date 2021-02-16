@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.personajes.app.entity.Personajes;
+import com.personajes.app.exceptions.ResourceNotFoundException;
 import com.personajes.app.service.PersonajeServices;
 
 
@@ -36,25 +37,19 @@ public class PersonajesController {
 	public ResponseEntity<?> create(@RequestBody Personajes personajes)
 	{
 		System.out.println("Begin Controller-create");
-		Personajes oPersonaje = personajeService.create(personajes);
-
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(oPersonaje);	
+		return ResponseEntity.status(HttpStatus.CREATED).body(personajeService.create(personajes));	
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> read(@PathVariable Long id)
 	{
 		System.out.println("Begin Controller-read");
+		
+		//return ResponseEntity.ok(personajeService.findById(id)
+		//		.orElseThrow(() -> new ResourceNotFoundException("Superheroe no encontrado=" + id.toString())));
 
-		Optional<Personajes> oPersonaje = personajeService.findById(id);
-		
-		if (!oPersonaje.isPresent())
-		{
-			return ResponseEntity.notFound().build();
-		}
-		
-		return ResponseEntity.ok(oPersonaje);
+		return ResponseEntity.ok(personajeService.findById(id));
 	}
 	
 	@PutMapping("/{id}")
@@ -62,16 +57,9 @@ public class PersonajesController {
 	{
 		System.out.println("Begin Controller-update");
 
-		Optional<Personajes> oPersonajes = personajeService.findById(id);
-		
-		if (!oPersonajes.isPresent())
-		{
-			return ResponseEntity.notFound().build();
-		}
-		
-		oPersonajes.get().setNombre(personajesDetails.getNombre());
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(personajeService.create(oPersonajes.get()));	
+		personajesDetails.setId(id);
+		return ResponseEntity.status(HttpStatus.OK).body(personajeService.update(personajesDetails));
+
 	}
 	
 	@DeleteMapping("/{id}")
@@ -79,14 +67,7 @@ public class PersonajesController {
 	{
 		System.out.println("Begin Controller-delete");
 
-		Optional<Personajes> oPersonajes = personajeService.findById(id);
-		
-		if (!oPersonajes.isPresent())
-		{
-			return ResponseEntity.notFound().build();
-		}
-		
-		personajeService.deleteById(id);		
+		personajeService.deleteById(id);
 		return ResponseEntity.ok().build();
 	}
 	
@@ -104,13 +85,10 @@ public class PersonajesController {
 	
 	
 	@GetMapping("/query")
-    public ArrayList<Personajes> readPersonajeByName(@RequestParam("nombre") String nombre){
+    public ArrayList<Personajes> readByName(@RequestParam("nombre") String nombre){
 
 		System.out.println("Begin Controller-readAll");
 
         return this.personajeService.findByNombreContaining(nombre);
 }
-
-	
-	
 }

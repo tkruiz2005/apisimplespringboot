@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 
 import com.personajes.app.entity.Personajes;
 
@@ -23,6 +22,8 @@ public interface PersonajeServices {
 	public void deleteById(Long id);
 	
 	public ArrayList<Personajes>  findByNombreContaining(String nombre);
+
+	public Personajes update(Personajes personajes);
 
 
 }
